@@ -10,10 +10,10 @@
 ---
 
 ## ⚡ The Problem: Standardizing Technical Debt
-The industry is currently standardizing on **HTTP + SSE** for agentic systems. This forces 2025 AI agents to operate with 2015 constraints:
+The industry is currently standardizing on **HTTP + SSE** for agentic systems (via MCP). This forces 2025 AI agents to operate with 2015 constraints:
 * **High Latency:** Handshake overhead per interaction.
 * **Unidirectional:** Servers cannot interrupt or steer the client effectively.
-* **Stateless:** Incompatible with complex, multi-turn agent context without external db bloat.
+* **Stateless:** Incompatible with complex, multi-turn agent context without external DB bloat.
 
 ## 🚀 The Solution: Agent Socket
 **Agent Socket** treats the connection as a persistent, stateful stream, even when running on ephemeral infrastructure (Lambda/Edge).
@@ -28,12 +28,12 @@ sequenceDiagram
     Client->>AgentSocket: Connect (Handshake)
     AgentSocket-->>Client: 101 Switching Protocols
     
-    par Full Duplex Stream
+    par Standard Stream
         Client->>AgentSocket: Action Request (Binary)
         AgentSocket->>ServerlessFn: Invoke (Hot Warm)
         ServerlessFn-->>AgentSocket: Stream Result
         AgentSocket-->>Client: Stream Chunk (0.5ms)
-    and
+    and Async Events
         ServerlessFn->>AgentSocket: Async Interrupt / Tool Discovery
         AgentSocket-->>Client: Push Update
     end
@@ -68,8 +68,8 @@ By eliminating repetitive HTTP headers and using optimized binary framing, Agent
 
 - [x] **Phase 1:** Architecture & Theory Validation (Completed Dec 2025)
 - [ ] **Phase 2:** Formal Specification White Paper (Q1 2026)
-- [ ] **Phase 3:** Reference Implementation (TypeScript/Rust/ Python/ Node.js) (Q1 2026)
-- [ ] **Phase 4:** Python SDK, RUST SDK & Benchmarks
+- [ ] **Phase 3:** Reference Implementation (TypeScript/Rust/Python/Node.js) (Q1 2026)
+- [ ] **Phase 4:** Python SDK, Rust SDK & Benchmarks
 
 ---
 
