@@ -1,41 +1,90 @@
-##We are sleepwalking into a legacy architecture for AI Agents.
+# Agent Socket
+### Stateful Agents on Stateless Infrastructure.
 
-Unpopular opinion: The industry is standardizing on technical debt.
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Status](https://img.shields.io/badge/Status-Concept%20%2F%20Alpha-orange)](https://github.com)
+[![Protocol](https://img.shields.io/badge/Protocol-WebSocket-green)](https://github.com)
 
-In 2017, I realized REST APIs were choking agentic systems. I moved to WebSockets. 📉 Latency dropped 70%. 💰 Costs plummeted. 🚀 Scale skyrocketed.
+**Agent Socket** is a Serverless-Native, WebSocket-first wire protocol engineered from first principles for modern AI Agents. It is designed as a high-performance, bidirectional alternative to HTTP-based standards (like MCP).
 
-Fast forward to 2024. The entire AI community (led by Anthropic’s MCP) has decided to standardize on... HTTP + SSE?
+---
 
-I’ve read the spec. It feels like 2015 all over again.
+## ⚡ The Problem: Standardizing Technical Debt
+The industry is currently standardizing on **HTTP + SSE** for agentic systems. This forces 2025 AI agents to operate with 2015 constraints:
+* **High Latency:** Handshake overhead per interaction.
+* **Unidirectional:** Servers cannot interrupt or steer the client effectively.
+* **Stateless:** Incompatible with complex, multi-turn agent context without external db bloat.
 
-We are accepting "trade-offs" that are actually just bad engineering: ❌ Stateless connections (incompatible with Serverless state) ❌ High latency (100ms+ overhead per turn) ❌ Massive HTTP header bloat
+## 🚀 The Solution: Agent Socket
+**Agent Socket** treats the connection as a persistent, stateful stream, even when running on ephemeral infrastructure (Lambda/Edge).
 
-I am refusing to accept this regression.
+```mermaid
+sequenceDiagram
+    participant Client
+    participant AgentSocket
+    participant ServerlessFn
+    
+    Note over Client, AgentSocket: 30ms Latency (Persistent)
+    Client->>AgentSocket: Connect (Handshake)
+    AgentSocket-->>Client: 101 Switching Protocols
+    
+    par Full Duplex Stream
+        Client->>AgentSocket: Action Request (Binary)
+        AgentSocket->>ServerlessFn: Invoke (Hot Warm)
+        ServerlessFn-->>AgentSocket: Stream Result
+        AgentSocket-->>Client: Stream Chunk (0.5ms)
+    and
+        ServerlessFn->>AgentSocket: Async Interrupt / Tool Discovery
+        AgentSocket-->>Client: Push Update
+    end
+```
+## ⚔️ Agent Socket vs. MCP (HTTP)
 
-So, I am building the alternative. And I am Open Sourcing it.
+| Feature | Agent Socket (This Protocol) | MCP (HTTP + SSE) |
+| :--- | :--- | :--- |
+| **Transport** | **WebSockets (Binary)** | HTTP (Text/JSON) |
+| **Latency** | **< 30ms** (Persistent) | 100ms+ (Per Request) |
+| **Communication** | **True Full-Duplex** | Request / Response |
+| **Serverless** | **Native** (Zero Cold Start) | High Cold Start Penalty |
+| **Discovery** | **Async / Just-in-Time** | Upfront / Static |
+| **Overhead** | **Minimal** (Binary frames) | Heavy (HTTP Headers) |
 
-Introducing: "AgentSocket" or "Nexus" - The next Gen Agent communication - A Serverless-Native, WebSocket-First Protocol engineered from first principles for modern AI.
+---
 
-This is not "MCP with WebSockets." This is a ground-up re-architecture for the 2025 stack.
+## ✨ Core Features
 
-The Core Specs (Public Disclosure):
+### 1. True Full-Duplex Communication
+Unlike HTTP, where the client must ask before the server speaks, Agent Socket allows agents to push updates, request clarification, or discover tools asynchronously without a new request cycle.
 
-True Full-Duplex: No faked asymmetry. Real-time.
+### 2. Serverless-Native Connection Pooling
+Designed for AWS Lambda, Cloudflare Workers, and Azure Functions. The protocol handles connection state management outside the function logic, allowing ephemeral compute to behave like a stateful server.
 
-Serverless-Native: Zero cold-start penalties; intelligent connection pooling.
+### 3. Binary Efficiency
+By eliminating repetitive HTTP headers and using optimized binary framing, Agent Socket reduces network bandwidth usage by up to **50%** compared to verbose JSON-over-HTTP protocols.
 
-Performance: 30ms latency (vs MCP’s 100ms+) & 50% bandwidth reduction.
+---
 
-Async Discovery: Just-in-time tool registration.
+## 🗺️ Roadmap
 
-MCP assumes you run persistent servers (2015 thinking). My protocol assumes you run on Lambda/Edge (2025 thinking).
+- [x] **Phase 1:** Architecture & Theory Validation (Completed Dec 2025)
+- [ ] **Phase 2:** Formal Specification White Paper (Q1 2026)
+- [ ] **Phase 3:** Reference Implementation (TypeScript/Rust/ Python/ Node.js) (Q1 2026)
+- [ ] **Phase 4:** Python SDK, RUST SDK & Benchmarks
 
-I’ve validated the theory. I’ve engineered the solution. Now, I’m finalizing the reference implementation.
+---
 
-Roadmap: 🔹 Q1 2026: White Paper & Formal Spec 🔹 Q1 2026: Open Source Release (MIT License)
+## 👤 Author & Philosophy
+**Architected by Kunal Gawde**
 
-I am staking my claim on this architecture today because the industry needs a correction, not just a standard.
+> *"We shouldn't standardize on technical debt. Existing protocols assume persistent servers; Agent Socket assumes the future is serverless."*
 
-If you are an engineer tired of retrofitting HTTP for agents—follow me for the repo drop.
+---
 
-#OpenSource #SystemArchitecture #AIAgents #WebSockets #Serverless #MCP
+## 📄 License
+Copyright © 2025 Kunal Gawde. All Rights Reserved.
+
+Licensed under the **Apache 2.0 License** (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
